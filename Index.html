@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NCPD Wanted Database — Enhanced</title>
+  <style>
+    :root{
+      --bg:#050008;
+      --panel:#0a0a14;
+      --panel2:#0f0f1a;
+      --line:#2b2b3a;
+      --text:#e6e6e6;
+      --muted:#a6a6b3;
+      --cyan:#00fff7;
+      --pink:#ff2a6d;
+      --red:#ff4444;
+      --amber:#ffaa00;
+      --violet:#aa55ff;
+      --ok:#4dff88;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:radial-gradient(1200px 600px at 20% 0%, #12001b 0%, var(--bg) 50%) fixed;
+      color:var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+      padding:18px;
+    }
+    h1{
+      margin:0 0 8px;
+      color:var(--cyan);
+      text-shadow:0 0 10px rgba(0,255,247,.5);
+      letter-spacing:.5px;
+      font-size:22px;
+    }
+    h2{margin:18px 0 8px; font-size:16px; color:#d6d6e6}
+    .top{
+      display:flex; gap:14px; flex-wrap:wrap;
+      align-items:center; justify-content:space-between;
+      padding:12px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(15,15,26,.9), rgba(10,10,20,.9));
+      border-radius:12px;
+    }
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .pill{
+      border:1px solid var(--line);
+      background:rgba(5,0,8,.35);
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .pill b{color:var(--text)}
+    .statline{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      font-size:12px; color:var(--muted);
+    }
+    .statline span b{color:var(--text)}
+    .bar{
+      height:8px; width:160px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      overflow:hidden;
+      background:rgba(255,255,255,.03);
+    }
+    .bar > div{height:100%; width:40%;}
+    button, select, input, textarea{
+      font:inherit;
+    }
+    button{
+      background:var(--pink);
+      border:none;
+      padding:7px 12px;
+      font-weight:700;
+      cursor:pointer;
+      border-radius:10px;
+      color:#0b0010;
+      box-shadow:0 8px 18px rgba(255,42,109,.18);
+    }
+    button:hover{filter:brightness(1.08)}
+    button.ghost{
+      background:transparent;
+      color:var(--text);
+      border:1px solid var(--line);
+      box-shadow:none;
+      font-weight:600;
+    }
+    button.ghost:hover{border-color:#444}
+    button.good{background:var(--ok)}
+    button.bad{background:var(--red); color:#140008}
+    button.warn{background:var(--amber); color:#140008}
+    select, input, textarea{
+      background:var(--panel2);
+      color:var(--text);
+      border:1px solid var(--line);
+      padding:7px 10px;
+      border-radius:10px;
+      outline:none;
+    }
+    input::placeholder, textarea::placeholder{color:#7f7f93}
+    textarea{min-height:70px; resize:vertical}
+    .grid{
+      display:grid;
+      grid-template-columns: 1.4fr .8fr;
+      gap:14px;
+      margin-top:14px;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr}
+    }
+    .panel{
+      border:1px solid var(--line);
+      background:rgba(10,10,20,.85);
+      border-radius:12px;
+      padding:12px;
+    }
+    .filters{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top:10px;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:10px;
+      overflow:hidden;
+      border-radius:12px;
+      border:1px solid var(--line);
+    }
+    th, td{
+      border-bottom:1px solid rgba(43,43,58,.7);
+      padding:8px 8px;
+      text-align:center;
+      font-size:12px;
+    }
+    th{
+      background:rgba(15,15,26,.95);
+      color:#dfe;
+      position:sticky;
+      top:0;
+      z-index:1;
+    }
+    tr:nth-child(even){background:rgba(18,18,31,.6)}
+    tr:hover{background:rgba(0,255,247,.06)}
+    .wanted{color:var(--red)}
+    .monitored{color:var(--amber)}
+    .classified{color:var(--violet)}
+    .expired{outline:1px solid rgba(255,68,68,.35)}
+    .timer{color:var(--cyan)}
+    .rightCol{display:flex; flex-direction:column; gap:14px}
+    .card{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+    }
+    .photo{
+      width:150px; height:150px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border-radius:12px;
+      display:flex; align-items:center; justify-content:center;
+      color:#707088;
+      font-size:11px;
+      text-align:center;
+    }
+    .info{flex:1}
+    .info b{color:var(--text)}
+    .small{color:var(--muted); font-size:12px}
+    .kv{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:8px;
+      margin-top:10px;
+      font-size:12px;
+    }
+    .kv div{
+      border:1px solid rgba(43,43,58,.7);
+      border-radius:10px;
+      padding:8px;
+      background:rgba(15,15,26,.6);
+    }
+    .kv div span{color:var(--muted)}
+    .actions{margin-top:10px; display:flex; gap:8px; flex-wrap:wrap}
+    .news{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      max-height:340px;
+      overflow:auto;
+      padding-right:4px;
+    }
+    .news p{
+      margin:0;
+      font-size:12px;
+      padding:8px 10px;
+      border:1px solid rgba(43,43,58,.7);
+      background:rgba(15,15,26,.55);
+      border-radius:10px;
+    }
+    .news p em{color:var(--muted); font-style:normal}
+    .modalBackdrop{
+      position:fixed; inset:0;
+      background:rgba(0,0,0,.55);
+      display:none; align-items:center; justify-content:center;
+      padding:16px;
+    }
+    .modal{
+      width:min(720px, 100%);
+      border:1px solid var(--line);
+      background:rgba(10,10,20,.96);
+      border-radius:14px;
+      padding:12px;
+      box-shadow:0 30px 80px rgba(0,0,0,.6);
+    }
+    .modal header{
+      display:flex; justify-content:space-between; align-items:center;
+      margin-bottom:10px;
+    }
+    .modal header b{color:var(--cyan)}
+    .two{display:grid; grid-template-columns: 1fr 1fr; gap:10px}
+    @media (max-width: 720px){.two{grid-template-columns:1fr}}
+    .footerBtns{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; margin-top:10px}
+    .hint{font-size:12px; color:var(--muted)}
+    .mono{white-space:pre-wrap; word-break:break-word}
+  </style>
+</head>
+<body>
+  <h1>🚨 NCPD WANTED DATABASE</h1>
+
+  <div class="top">
+    <div class="row">
+      <span class="pill">Solo Contractor Access · Подписка: <b id="subLabel">INTERNAL</b></span>
+      <select id="subSelect" title="Уровень доступа">
+        <option>BASIC</option>
+        <option>PRO</option>
+        <option selected>INTERNAL</option>
+      </select>
+      <button id="btnRegen">🔄 Сгенерировать пакет</button>
+      <button class="ghost" id="btnAdd">＋ Добавить цель</button>
+    </div>
+
+    <div class="statline">
+      <span>Reputation: <b id="repVal">0</b></span>
+      <span class="bar" title="Репутация"><div id="repBar"></div></span>
+      <span>Heat: <b id="heatVal">0</b></span>
+      <span class="bar" title="Heat"><div id="heatBar"></div></span>
+      <span class="pill">Версия: <b>ENHANCED</b></span>
+    </div>
+
+    <div class="row">
+      <button class="ghost" id="btnSave">💾 Сохранить</button>
+      <button class="ghost" id="btnExport">⬇ Экспорт</button>
+      <button class="ghost" id="btnImport">⬆ Импорт</button>
+      <button class="ghost" id="btnReset">🧨 Сброс</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <h2>Активные цели</h2>
+
+      <div class="filters">
+        <input id="q" placeholder="Поиск: имя / обвинение / заметки…" style="min-width:240px; flex:1" />
+        <select id="fStatus" title="Статус">
+          <option value="">Все статусы</option>
+          <option>WANTED</option>
+          <option>MONITORED</option>
+          <option>CLASSIFIED</option>
+        </select>
+        <select id="fArea" title="Район">
+          <option value="">Все районы</option>
+        </select>
+        <select id="fType" title="Тип">
+          <option value="">Все типы</option>
+        </select>
+        <select id="sortBy" title="Сортировка">
+          <option value="timerAsc">Таймер ↑</option>
+          <option value="rewardDesc" selected>Награда ↓</option>
+          <option value="threatDesc">Угроза ↓</option>
+          <option value="nameAsc">Имя A→Z</option>
+        </select>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Статус</th>
+            <th>Имя</th>
+            <th>Тип</th>
+            <th>Район</th>
+            <th>Награда</th>
+            <th>Таймер</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="list"></tbody>
+      </table>
+
+      <div class="hint" style="margin-top:10px">
+        Подсказка: высокий <b>Heat</b> увеличивает шанс “Засады/Третьей стороны”. Высокая <b>Reputation</b> повышает качество данных и награды.
+      </div>
+    </div>
+
+    <div class="rightCol">
+      <div class="panel">
+        <h2>📂 Карточка цели</h2>
+        <div id="card" class="card">Выберите цель</div>
+      </div>
+
+      <div class="panel">
+        <h2>📰 Лента последствий</h2>
+        <div id="news" class="news"></div>
+      </div>
+
+      <div class="panel">
+        <h2>🗃 Архив дел</h2>
+        <div class="hint" id="archiveHint">Пока пусто.</div>
+        <div id="archive" class="news"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: add/edit target -->
+  <div class="modalBackdrop" id="modalBackdrop">
+    <div class="modal">
+      <header>
+        <b id="modalTitle">Новая цель</b>
+        <button class="ghost" id="btnCloseModal">✕</button>
+      </header>
+
+      <div class="two">
+        <div>
+          <div class="hint">Имя</div>
+          <input id="m_name" placeholder="Напр. Nyx" />
+        </div>
+        <div>
+          <div class="hint">Статус</div>
+          <select id="m_status">
+            <option>WANTED</option>
+            <option>MONITORED</option>
+            <option>CLASSIFIED</option>
+          </select>
+        </div>
+
+        <div>
+          <div class="hint">Тип</div>
+          <select id="m_type"></select>
+        </div>
+        <div>
+          <div class="hint">Район</div>
+          <select id="m_area"></select>
+        </div>
+
+        <div>
+          <div class="hint">Награда (€$)</div>
+          <input id="m_reward" type="number" min="0" step="100" />
+        </div>
+        <div>
+          <div class="hint">Таймер (часов)</div>
+          <input id="m_timer" type="number" min="1" step="1" />
+        </div>
+
+        <div>
+          <div class="hint">Обвинение</div>
+          <input id="m_crime" placeholder="Напр. Кража данных" />
+        </div>
+        <div>
+          <div class="hint">Оружие</div>
+          <input id="m_weapon" placeholder="Напр. Cyberdeck" />
+        </div>
+
+        <div>
+          <div class="hint">Бэкграунд</div>
+          <input id="m_background" placeholder="Напр. нетраннер-фрилансер" />
+        </div>
+        <div>
+          <div class="hint">Угроза (1–5)</div>
+          <input id="m_threat" type="number" min="1" max="5" step="1" />
+        </div>
+
+        <div>
+          <div class="hint">Точность данных (0–100)</div>
+          <input id="m_accuracy" type="number" min="0" max="100" step="1" />
+        </div>
+        <div>
+          <div class="hint">Осложнение</div>
+          <input id="m_complication" placeholder="Напр. Засада" />
+        </div>
+
+        <div style="grid-column:1/-1">
+          <div class="hint">Заметка</div>
+          <textarea id="m_note" placeholder="Любые заметки для мастера…"></textarea>
+        </div>
+      </div>
+
+      <div class="footerBtns">
+        <button class="ghost" id="btnFillRand">🎲 Заполнить случайно</button>
+        <button class="good" id="btnSaveTarget">✅ Сохранить цель</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: import -->
+  <div class="modalBackdrop" id="importBackdrop">
+    <div class="modal">
+      <header>
+        <b>Импорт базы (JSON)</b>
+        <button class="ghost" id="btnCloseImport">✕</button>
+      </header>
+      <div class="hint">Вставь JSON, который ты экспортировал отсюда. Он перезапишет текущее состояние.</div>
+      <textarea id="importText" class="mono" placeholder='{"version":"ncpd-enhanced","state":{...}}'></textarea>
+      <div class="footerBtns">
+        <button class="warn" id="btnDoImport">⬆ Импортировать</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  // ---------- DATA ----------
+  const NAMES = ["Jax Kilowatt","Maria Kline","ZeroTrace","Victor Hale","Nyx","Chrome Jack","Lace","Omen","Razor","Echo","Sable","Koi","Vanta","Glitch Queen","Riven","Karma","Torque"];
+  const AREAS = ["Watson","Heywood","Pacifica","City Center","Badlands","Arroyo","Santo Domingo","Westbrook"];
+  const TYPES = ["Arrest","Neutralize","Surveillance","Recover","Expunged","Escort","Blackmail","Extraction","Cleanup","Data Hunt","Asset Denial","Warrant Serve","Witness Locate"];
+  const CRIMES = ["Корпоративный саботаж","Убийство офицера NCPD","Незаконный нетраннинг","Терроризм","Кража данных","Контрабанда киберимплантов","Дезертирство","Утечка ИИ","Шантаж чиновника","Подлог ордеров"];
+  const WEAPONS = ["Smart Pistol","Katana","Shotgun","Monowire","Cyberdeck","Sniper Rifle","SMG","Heavy Pistol","Gorilla Arms","Grenade Launcher"];
+  const BACKGROUNDS = ["бывший корпоративный агент","уличный соло","нетраннер-фрилансер","член банды","корпоративный перебежчик","частный военный","медтех-ренегат","экс-детектив"];
+  const COMPLICATIONS = ["Засада","Третья сторона","Корпоративный наблюдатель","Подстава","Нет осложнений","Утечка в СМИ","Фальшивый свидетель","Чистильщики на хвосте"];
+  const NOTES = ["Данные могут быть устаревшими","Корпорации проявляют интерес","Желательно взять живым","Офицеры сомневаются","Подозрительно чистая легенда","Замечены следы редкого киберсофта"];
+
+  const STORAGE_KEY = "ncpd_enhanced_state_v1";
+
+  // ---------- STATE ----------
+  let state = {
+    version: "ncpd-enhanced",
+    subscription: "INTERNAL",
+    reputation: 0,  // -50..+50
+    heat: 0,        // 0..100
+    missions: [],
+    archive: [],
+    news: [],
+    selectedId: null,
+    nowTick: Date.now()
+  };
+
+  // ---------- DOM ----------
+  const $ = (id) => document.getElementById(id);
+  const el = {
+    subLabel: $("subLabel"),
+    subSelect: $("subSelect"),
+    btnRegen: $("btnRegen"),
+    btnAdd: $("btnAdd"),
+    btnSave: $("btnSave"),
+    btnExport: $("btnExport"),
+    btnImport: $("btnImport"),
+    btnReset: $("btnReset"),
+    repVal: $("repVal"),
+    heatVal: $("heatVal"),
+    repBar: $("repBar"),
+    heatBar: $("heatBar"),
+
+    q: $("q"),
+    fStatus: $("fStatus"),
+    fArea: $("fArea"),
+    fType: $("fType"),
+    sortBy: $("sortBy"),
+
+    list: $("list"),
+    card: $("card"),
+    news: $("news"),
+    archive: $("archive"),
+    archiveHint: $("archiveHint"),
+
+    modalBackdrop: $("modalBackdrop"),
+    importBackdrop: $("importBackdrop"),
+    btnCloseModal: $("btnCloseModal"),
+    btnSaveTarget: $("btnSaveTarget"),
+    btnFillRand: $("btnFillRand"),
+    modalTitle: $("modalTitle"),
+
+    m_name: $("m_name"),
+    m_status: $("m_status"),
+    m_type: $("m_type"),
+    m_area: $("m_area"),
+    m_reward: $("m_reward"),
+    m_timer: $("m_timer"),
+    m_crime: $("m_crime"),
+    m_weapon: $("m_weapon"),
+    m_background: $("m_background"),
+    m_threat: $("m_threat"),
+    m_accuracy: $("m_accuracy"),
+    m_complication: $("m_complication"),
+    m_note: $("m_note"),
+
+    btnCloseImport: $("btnCloseImport"),
+    btnDoImport: $("btnDoImport"),
+    importText: $("importText"),
+  };
+
+  // ---------- HELPERS ----------
+  const rand = (a) => a[Math.floor(Math.random() * a.length)];
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const uid = () => Math.random().toString(16).slice(2) + "-" + Date.now().toString(16);
+
+  function fmtMoney(n){
+    return (Math.round(n)).toLocaleString("ru-RU");
+  }
+
+  function hoursLeft(m){
+    const msLeft = m.deadline - Date.now();
+    return msLeft / (1000*60*60);
+  }
+
+  function fmtTimer(m){
+    const ms = m.deadline - Date.now();
+    if (ms <= 0) return "0ч 00м";
+    const totalMin = Math.floor(ms / 60000);
+    const h = Math.floor(totalMin / 60);
+    const min = totalMin % 60;
+    return `${h}ч ${String(min).padStart(2,"0")}м`;
+  }
+
+  function statusClass(s){
+    if (s === "WANTED") return "wanted";
+    if (s === "CLASSIFIED") return "classified";
+    return "monitored";
+  }
+
+  function addNews(text){
+    state.news.unshift({ t: Date.now(), text });
+    state.news = state.news.slice(0, 40);
+  }
+
+  function addArchive(entry){
+    state.archive.unshift(entry);
+    state.archive = state.archive.slice(0, 60);
+  }
+
+  // Subscription knobs
+  function subConfig(){
+    const sub = state.subscription;
+    if (sub === "BASIC") return { max:5, baseAcc:45, baseReward:1200 };
+    if (sub === "PRO") return { max:8, baseAcc:55, baseReward:1600 };
+    return { max:12, baseAcc:65, baseReward:2000 }; // INTERNAL
+  }
+
+  function repFactor(){
+    // -50..+50 -> 0.85..1.20
+    return 1 + (clamp(state.reputation, -50, 50) / 50) * 0.175;
+  }
+
+  function heatComplicationBoost(){
+    // heat 0..100 : boosts chance of nasty complications
+    return clamp(state.heat, 0, 100) / 100;
+  }
+
+  // ---------- GENERATION ----------
+  function generatePack(){
+    const { max, baseAcc, baseReward } = subConfig();
+    const rep = repFactor();
+
+    const newMissions = [];
+    for (let i=0;i<max;i++){
+      const type = rand(TYPES);
+
+      const status =
+        type === "Expunged" ? "CLASSIFIED" :
+        Math.random() > 0.62 ? "WANTED" : "MONITORED";
+
+      const threat = 1 + Math.floor(Math.random()*5);
+
+      // reward scales with rep + threat + subscription
+      const reward = Math.round((baseReward + Math.random()*5200 + threat*650) * rep);
+
+      // accuracy scales with subscription + rep, bounded
+      const accuracy = clamp(
+        Math.round((baseAcc + Math.random()*35) * (0.95 + (rep-1)*0.6)),
+        25, 98
+      );
+
+      // timer: 12..84 hours, shorter if heat high
+      const heat = clamp(state.heat, 0, 100);
+      const baseHours = Math.floor(Math.random()*72) + 12;
+      const shortened = Math.round(baseHours * (1 - heat*0.002)); // up to ~20% shorter at heat 100
+      const timerH = clamp(shortened, 6, 120);
+      const deadline = Date.now() + timerH * 60 * 60 * 1000;
+
+      // complication: heat increases odds of "bad" ones
+      const boost = heatComplicationBoost();
+      const hard = ["Засада","Третья сторона","Подстава","Чистильщики на хвосте","Утечка в СМИ"];
+      const soft = COMPLICATIONS.filter(x => !hard.includes(x));
+      const complication = Math.random() < (0.25 + boost*0.35) ? rand(hard) : rand(soft);
+
+      newMissions.push({
+        id: uid(),
+        createdAt: Date.now(),
+        name: rand(NAMES),
+        type,
+        area: rand(AREAS),
+        reward,
+        status,
+        accuracy,
+        threat,
+        crime: rand(CRIMES),
+        weapon: rand(WEAPONS),
+        background: rand(BACKGROUNDS),
+        deadline,
+        complication,
+        note: rand(NOTES),
+        // extra fields for future chaining
+        tags: [],
+      });
+    }
+
+    state.missions = newMissions;
+    state.selectedId = null;
+    addNews(`Пакет целей обновлён. Доступ: ${state.subscription}.`);
+    renderAll();
+  }
+
+  // ---------- FILTERING / SORTING ----------
+  function getFilteredMissions(){
+    const q = el.q.value.trim().toLowerCase();
+    const fs = el.fStatus.value;
+    const fa = el.fArea.value;
+    const ft = el.fType.value;
+
+    let arr = state.missions.slice();
+
+    if (q){
+      arr = arr.filter(m => {
+        const hay = `${m.name} ${m.crime} ${m.note} ${m.type} ${m.area}`.toLowerCase();
+        return hay.includes(q);
+      });
+    }
+    if (fs) arr = arr.filter(m => m.status === fs);
+    if (fa) arr = arr.filter(m => m.area === fa);
+    if (ft) arr = arr.filter(m => m.type === ft);
+
+    switch (el.sortBy.value){
+      case "rewardDesc":
+        arr.sort((a,b) => b.reward - a.reward); break;
