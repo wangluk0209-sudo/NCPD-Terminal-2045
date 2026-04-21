@@ -1,0 +1,300 @@
+{
+  "meta": {
+    "projectName": "Система Гелиос",
+    "version": "1.0",
+    "language": "ru",
+    "description": "Каноничные данные для офлайн интерактивной карты системы Гелиос.",
+    "notes": [
+      "Гелиос — звезда системы.",
+      "Гелиос Прайм — орбитальное кольцо вокруг звезды, а не планета.",
+      "Арк-Море не входит в главную имперскую магистраль.",
+      "Официальные маршруты отображаются штрихами: 1 штрих = 1 парсек."
+    ]
+  },
+  "view": {
+    "center": { "x": 0, "y": 0 },
+    "pseudo3dTilt": 0.72,
+    "defaultZoom": 1,
+    "minZoom": 0.65,
+    "maxZoom": 2.4
+  },
+  "time": {
+    "defaultSpeed": 1,
+    "speedOptions": [0, 1, 5, 20],
+    "unitName": "условный цикл"
+  },
+  "star": {
+    "id": "helios_star",
+    "name": "Гелиос",
+    "type": "star",
+    "description": "Центральная звезда системы Гелиос.",
+    "position": { "x": 0, "y": 0 },
+    "render": {
+      "radius": 58,
+      "glowRadius": 140,
+      "palette": ["#fff0a0", "#ffd56c", "#f19e3d", "#7a3f16"]
+    }
+  },
+  "primeRing": {
+    "id": "helios_prime",
+    "name": "Гелиос Прайм",
+    "type": "orbital_ring",
+    "code": "A800A79-C",
+    "shortDescription": "Единое орбитальное кольцо вокруг звезды Гелиос. Центральный имперский узел системы.",
+    "orbitRadius": 170,
+    "initialAngle": 0,
+    "pseudo3dScale": 1.08,
+    "isCentralStructure": true,
+    "notesKey": "notes_helios_prime",
+    "render": {
+      "ringRadiusX": 170,
+      "ringRadiusY": 120,
+      "ringThickness": 18,
+      "labelOffset": { "x": 0, "y": -165 }
+    }
+  },
+  "worlds": [
+    {
+      "id": "ferrox",
+      "name": "Феррокс",
+      "type": "world",
+      "code": "B662867-A",
+      "shortDescription": "Ближний промышленный мир тяжёлой индустрии и переработки.",
+      "orbitRadius": 340,
+      "initialAngle": 350,
+      "angularSpeed": 0.0068,
+      "pseudo3dScale": 0.98,
+      "notesKey": "notes_ferrox",
+      "render": {
+        "radius": 44,
+        "palette": ["#c59165", "#7a4d35", "#4e3022"],
+        "labelOffset": { "x": 95, "y": -8 },
+        "moon": {
+          "enabled": true,
+          "distance": 72,
+          "angle": 210,
+          "radius": 12
+        }
+      }
+    },
+    {
+      "id": "porg",
+      "name": "Порог",
+      "type": "world",
+      "code": "C955534-6",
+      "shortDescription": "Транспортный промежуточный мир независимой логистики и ремонта.",
+      "orbitRadius": 520,
+      "initialAngle": 32,
+      "angularSpeed": 0.0049,
+      "pseudo3dScale": 0.95,
+      "notesKey": "notes_porg",
+      "render": {
+        "radius": 40,
+        "palette": ["#c98a55", "#7b4d2f", "#57341f"],
+        "labelOffset": { "x": 95, "y": 8 },
+        "moon": {
+          "enabled": false
+        }
+      }
+    },
+    {
+      "id": "ark_more",
+      "name": "Арк-Море",
+      "type": "world",
+      "code": "B78A745-8",
+      "shortDescription": "Океанический мир, вынесенный в сторону от главной магистрали.",
+      "orbitRadius": 710,
+      "initialAngle": 325,
+      "angularSpeed": 0.0034,
+      "pseudo3dScale": 1.02,
+      "notesKey": "notes_ark_more",
+      "render": {
+        "radius": 50,
+        "palette": ["#86a58e", "#4f7065", "#31443f"],
+        "labelOffset": { "x": 110, "y": -10 },
+        "moon": {
+          "enabled": true,
+          "distance": 82,
+          "angle": 305,
+          "radius": 10
+        }
+      }
+    },
+    {
+      "id": "sargass",
+      "name": "Саргасс",
+      "type": "world",
+      "code": "D898788-9",
+      "shortDescription": "Внешний опасный мир биорисков, руин и карантинных угроз.",
+      "orbitRadius": 930,
+      "initialAngle": 12,
+      "angularSpeed": 0.0025,
+      "pseudo3dScale": 1.04,
+      "notesKey": "notes_sargass",
+      "render": {
+        "radius": 56,
+        "palette": ["#8db06f", "#4d7348", "#35523a"],
+        "labelOffset": { "x": 105, "y": 10 },
+        "moon": {
+          "enabled": false
+        }
+      }
+    },
+    {
+      "id": "niveya",
+      "name": "Нивея",
+      "type": "world",
+      "code": "C547656-7",
+      "shortDescription": "Самый дальний холодный мир системы и дальняя официальная магистраль.",
+      "orbitRadius": 1140,
+      "initialAngle": 345,
+      "angularSpeed": 0.0018,
+      "pseudo3dScale": 1.03,
+      "notesKey": "notes_niveya",
+      "render": {
+        "radius": 52,
+        "palette": ["#d2e6f4", "#8cb1cc", "#5f7f9d"],
+        "labelOffset": { "x": 88, "y": -16 },
+        "moon": {
+          "enabled": true,
+          "distance": 78,
+          "angle": 300,
+          "radius": 12
+        }
+      }
+    }
+  ],
+  "objects": [
+    {
+      "id": "ashen_crown",
+      "name": "Пепельная Корона",
+      "type": "asteroid_field",
+      "shortDescription": "Астероидное поле системы. Читаемое, но не перегруженное.",
+      "orbitRadius": 620,
+      "initialAngle": 300,
+      "pseudo3dScale": 1,
+      "notesKey": "notes_ashen_crown",
+      "render": {
+        "kind": "belt_cluster",
+        "clusterWidth": 190,
+        "clusterHeight": 80,
+        "labelOffset": { "x": -20, "y": -80 }
+      }
+    },
+    {
+      "id": "blind_mirror",
+      "name": "Слепое Зеркало",
+      "type": "anomaly",
+      "shortDescription": "Внешняя аномалия. Точка напряжения, тайны и навигационного риска.",
+      "orbitRadius": 980,
+      "initialAngle": 70,
+      "pseudo3dScale": 1,
+      "notesKey": "notes_blind_mirror",
+      "render": {
+        "kind": "anomaly_ring",
+        "radius": 34,
+        "labelOffset": { "x": 40, "y": 70 }
+      }
+    },
+    {
+      "id": "blue_crown",
+      "name": "Голубой Венец",
+      "type": "customs_station",
+      "shortDescription": "Имперская таможенная станция внешнего официального контроля.",
+      "orbitRadius": 760,
+      "initialAngle": 318,
+      "pseudo3dScale": 1,
+      "notesKey": "notes_blue_crown",
+      "render": {
+        "kind": "station",
+        "labelOffset": { "x": 36, "y": -40 }
+      }
+    },
+    {
+      "id": "octant_7",
+      "name": "Октант-7",
+      "type": "neutral_shipyard",
+      "shortDescription": "Нейтральная верфь и сервисный узел вне центра.",
+      "orbitRadius": 820,
+      "initialAngle": 128,
+      "pseudo3dScale": 1,
+      "notesKey": "notes_octant_7",
+      "render": {
+        "kind": "station",
+        "labelOffset": { "x": -50, "y": 48 }
+      }
+    },
+    {
+      "id": "solar_castle",
+      "name": "Солнечный Замок",
+      "type": "military_fort",
+      "shortDescription": "Военный форт Империи. Малый, но символически значимый объект.",
+      "orbitRadius": 910,
+      "initialAngle": 145,
+      "pseudo3dScale": 1,
+      "notesKey": "notes_solar_castle",
+      "render": {
+        "kind": "station",
+        "labelOffset": { "x": -70, "y": 52 }
+      }
+    },
+    {
+      "id": "quarantine_station",
+      "name": "Карантинная станция",
+      "type": "quarantine_station",
+      "shortDescription": "Внешний карантинный узел между опасными бионаправлениями и легальными маршрутами.",
+      "orbitRadius": 1030,
+      "initialAngle": 35,
+      "pseudo3dScale": 1,
+      "notesKey": "notes_quarantine_station",
+      "render": {
+        "kind": "station",
+        "labelOffset": { "x": 55, "y": 40 }
+      }
+    }
+  ],
+  "officialRoutes": [
+    {
+      "id": "route_prime_ferrox",
+      "from": "helios_prime",
+      "to": "ferrox",
+      "isMain": false,
+      "color": "#f0b84f"
+    },
+    {
+      "id": "route_prime_porg",
+      "from": "helios_prime",
+      "to": "porg",
+      "isMain": false,
+      "color": "#f0b84f"
+    },
+    {
+      "id": "route_prime_niveya",
+      "from": "helios_prime",
+      "to": "niveya",
+      "isMain": true,
+      "color": "#ffd680"
+    },
+    {
+      "id": "route_prime_sargass",
+      "from": "helios_prime",
+      "to": "sargass",
+      "isMain": false,
+      "color": "#f0b84f"
+    }
+  ],
+  "userRouteConfig": {
+    "allowCustomRoutes": true,
+    "customRouteStorageKey": "helios_custom_routes",
+    "dashUnitName": "парсек",
+    "dashRule": "1 dash = 1 parsec"
+  },
+  "ui": {
+    "sidebarDefaultTab": "info",
+    "showLabelsByDefault": true,
+    "showObjectsByDefault": true,
+    "showRoutesByDefault": true,
+    "showOrbitsByDefault": true,
+    "theme": "sci-fi pseudo3d"
+  }
+}
