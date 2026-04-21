@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Система Гелиос — Каркас</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>Система Гелиос</h1>
+    <div class="topbar__controls">
+      <div class="btn-group">
+        <button id="pauseBtn" type="button" aria-pressed="false">Пауза</button>
+        <button id="speed1" type="button" class="is-active">x1</button>
+        <button id="speed5" type="button">x5</button>
+        <button id="speed20" type="button">x20</button>
+      </div>
+      <div class="btn-group">
+        <button id="zoomIn" type="button">+</button>
+        <button id="zoomOut" type="button">−</button>
+        <button id="resetView" type="button">Сброс вида</button>
+      </div>
+      <span class="hint">Колесо мыши: зум · ЛКМ+перетаскивание: панорама</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="map-panel">
+      <canvas id="mapCanvas" width="1400" height="900" aria-label="Карта системы Гелиос"></canvas>
+    </section>
+
+    <aside class="info-panel">
+      <h2>Информация</h2>
+      <div id="emptyState" class="empty">Выберите мир или объект на карте</div>
+      <article id="entityCard" class="card hidden" aria-live="polite">
+        <h3 id="entityName"></h3>
+        <p id="entityType" class="meta"></p>
+        <p id="entityCode" class="meta"></p>
+        <p id="entityDescription"></p>
+      </article>
+
+      <section class="route-builder">
+        <h3>Пользовательский маршрут</h3>
+        <label for="routeFrom">Откуда</label>
+        <select id="routeFrom"></select>
+        <label for="routeTo">Куда</label>
+        <select id="routeTo"></select>
+        <div class="btn-group">
+          <button id="addRoute" type="button">Добавить маршрут</button>
+          <button id="clearRoutes" type="button">Очистить</button>
+        </div>
+      </section>
+
+      <section class="legend">
+        <h3>Легенда</h3>
+        <ul>
+          <li><span class="dot star"></span> Звезда</li>
+          <li><span class="dot ring"></span> Орбитальное кольцо</li>
+          <li><span class="dot world"></span> Мир</li>
+          <li><span class="dot object"></span> Объект системы</li>
+          <li><span class="line official"></span> Официальный маршрут</li>
+          <li><span class="line main"></span> Главная магистраль</li>
+          <li><span class="line custom"></span> Пользовательский маршрут</li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
