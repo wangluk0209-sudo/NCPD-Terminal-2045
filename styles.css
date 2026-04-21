@@ -43,23 +43,15 @@ body {
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  flex-wrap: wrap;
 }
 
 button,
-select,
-textarea {
+select {
   border: 1px solid var(--line);
   background: linear-gradient(180deg, #17263d, #111b2e);
   color: var(--text);
   border-radius: 8px;
   padding: 0.45rem 0.75rem;
-}
-textarea {
-  width: 100%;
-  resize: vertical;
-  min-height: 92px;
-  font: inherit;
 }
 
 button { cursor: pointer; }
@@ -102,25 +94,6 @@ button.is-active {
 
 .info-panel h2 { margin-top: 0; }
 
-.panel-tabs {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.35rem;
-}
-
-.panel-tabs button {
-  padding: 0.4rem 0.45rem;
-  font-size: 0.85rem;
-}
-
-.panel-section {
-  display: none;
-}
-
-.panel-section.is-active {
-  display: block;
-}
-
 .empty {
   color: var(--muted);
   padding: 0.75rem;
@@ -154,32 +127,6 @@ button.is-active {
 .card h3 { margin-top: 0; margin-bottom: 0.5rem; }
 .meta { color: var(--muted); margin: 0.2rem 0; }
 .hidden { display: none; }
-.card {
-  transition: transform 180ms ease, opacity 180ms ease;
-}
-.card:not(.hidden) {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.notes-list {
-  display: grid;
-  gap: 0.75rem;
-}
-
-.notes-item {
-  padding: 0.5rem;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: rgba(12, 20, 34, 0.55);
-}
-
-.notes-item label {
-  display: block;
-  margin-bottom: 0.35rem;
-  color: var(--muted);
-  font-size: 0.9rem;
-}
 
 .legend {
   margin-top: 1rem;

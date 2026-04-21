@@ -32,65 +32,13 @@
 
     <aside class="info-panel">
       <h2>Информация</h2>
-
-      <nav class="panel-tabs" aria-label="Вкладки панели">
-        <button id="tabInfo" type="button" class="is-active">Инфо</button>
-        <button id="tabMaster" type="button">Мастер</button>
-        <button id="tabPlanets" type="button">Планеты</button>
-        <button id="tabStations" type="button">Станции</button>
-        <button id="tabEconomy" type="button">Экономика</button>
-      </nav>
-
-      <section id="panelInfo" class="panel-section is-active">
-        <div id="emptyState" class="empty">Выберите мир или объект на карте</div>
-        <article id="entityCard" class="card hidden" aria-live="polite">
-          <h3 id="entityName"></h3>
-          <p id="entityType" class="meta"></p>
-          <p id="entityCode" class="meta"></p>
-          <p id="entityDescription"></p>
-
-          <label for="entityNotes">Заметка по объекту</label>
-          <textarea id="entityNotes" rows="6" placeholder="Текст заметки для выбранного объекта"></textarea>
-          <div class="btn-group">
-            <button id="saveEntityNote" type="button">Сохранить заметку</button>
-            <button id="clearEntityNote" type="button">Очистить заметку</button>
-          </div>
-        </article>
-      </section>
-
-      <section id="panelMaster" class="panel-section">
-        <article class="card">
-          <h3>Большие заметки мастера</h3>
-          <textarea id="masterNotes" rows="12" placeholder="Сцены, NPC, тайны, планы партии..."></textarea>
-          <div class="btn-group">
-            <button id="saveMasterNotes" type="button">Сохранить</button>
-          </div>
-        </article>
-      </section>
-
-      <section id="panelPlanets" class="panel-section">
-        <article class="card">
-          <h3>Планеты</h3>
-          <div id="planetNotesList" class="notes-list"></div>
-        </article>
-      </section>
-
-      <section id="panelStations" class="panel-section">
-        <article class="card">
-          <h3>Станции</h3>
-          <div id="stationNotesList" class="notes-list"></div>
-        </article>
-      </section>
-
-      <section id="panelEconomy" class="panel-section">
-        <article class="card">
-          <h3>Экономика</h3>
-          <textarea id="economyNotes" rows="12" placeholder="Рынки, дефицит, контракты, логистика..."></textarea>
-          <div class="btn-group">
-            <button id="saveEconomyNotes" type="button">Сохранить</button>
-          </div>
-        </article>
-      </section>
+      <div id="emptyState" class="empty">Выберите мир или объект на карте</div>
+      <article id="entityCard" class="card hidden" aria-live="polite">
+        <h3 id="entityName"></h3>
+        <p id="entityType" class="meta"></p>
+        <p id="entityCode" class="meta"></p>
+        <p id="entityDescription"></p>
+      </article>
 
       <section class="route-builder">
         <h3>Пользовательский маршрут</h3>
@@ -100,7 +48,7 @@
         <select id="routeTo"></select>
         <div class="btn-group">
           <button id="addRoute" type="button">Добавить маршрут</button>
-          <button id="clearRoutes" type="button">Сброс пользовательских маршрутов</button>
+          <button id="clearRoutes" type="button">Очистить</button>
         </div>
       </section>
 
